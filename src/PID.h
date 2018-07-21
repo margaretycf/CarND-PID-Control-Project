@@ -1,6 +1,8 @@
 #ifndef PID_H
 #define PID_H
 
+#include <vector>
+
 class PID {
 public:
   /*
@@ -18,6 +20,17 @@ public:
   double Kd;
 
   /*
+  * Twiddle variables
+  */
+  bool doesTwiddle;
+  std::vector<double> p;
+  std::vector<double> dp;
+  int moveCount;
+  // number of steps to allow changes to settle, then to evaluate error
+  int n_settle_moves, n_eval_moves;
+  double total_error, best_error, tolerance;
+
+  /*
   * Constructor
   */
   PID();
@@ -30,7 +43,7 @@ public:
   /*
   * Initialize PID.
   */
-  void Init(double Kp, double Ki, double Kd);
+  void Init(double Kp, double Ki, double Kd, bool doesTwiddle);
 
   /*
   * Update the PID error variables given cross track error.
